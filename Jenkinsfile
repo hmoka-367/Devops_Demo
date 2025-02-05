@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/hemanthmoka/Devops_Demo.git'
+                git branch: 'main', credentialsId: 'UserNamePw', url: 'https://github.com/hemanthmoka/Devops_Demo.git'
             }
         }
 
