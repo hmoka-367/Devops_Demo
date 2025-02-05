@@ -1,25 +1,29 @@
-# Use an OpenJDK base image
-FROM openjdk:11-jre-slim
+package com.example;
 
-# Install X11 libraries to allow GUI applications to display on the host machine
-RUN apt-get update && apt-get install -y \
-    libx11-dev \
-    libxtst6 \
-    libxi6 \
-    && rm -rf /var/lib/apt/lists/*
+import java.io.*;
+import java.net.*;
 
-# Set working directory
-WORKDIR /app
+public class App {
+    public static void main(String[] args) throws IOException {
+        // Create a simple HTTP server that listens on port 8080
+        int port = 80;
+        ServerSocket serverSocket = new ServerSocket(port);
+        System.out.println("Server is listening on port " + port);
 
-# Copy Java file and image to container
-COPY DisplayImage.java .
-COPY image.jpg .
-
-# Install Maven to compile the Java file
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
-
-# Compile the Java program
-RUN javac DisplayImage.java
-
-# Set the entrypoint to run the Java program
-ENTRYPOINT ["java", "DisplayImage"]
+        while (true) {
+            try (Socket clientSocket = serverSocket.accept()) {
+                // Handle the client request
+                OutputStream outputStream = clientSocket.getOutputStream();
+                PrintWriter writer = new PrintWriter(outputStream, true);
+                
+                // Send HTTP headers
+                writer.println("HTTP/1.1 200 OK");
+                writer.println("Content-Type: text/plain");
+                writer.println();  // Blank line before body content
+                writer.println("Hello, DevOps!");  // Body content
+                
+                writer.flush();
+            }
+        }
+    }
+}
