@@ -22,7 +22,7 @@ pipeline {
                         docker rm %%i
                     )
                 '''
-                bat 'docker run -d --name devops-demo -p 8085:8080 devops-demo:latest'
+                bat 'docker run -d --name devops-demo -p 8085:8081 devops-demo:latest'
             }
         }
     }
