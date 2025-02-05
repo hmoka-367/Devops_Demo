@@ -16,7 +16,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 bat 'docker build -t devops-demo .'
-                bat 'docker run -d --name devops-demo -p 8080:8080 devops-demo:latest'
+                bat 'docker run -d --name devops-demo -p 8085:80 devops-demo:latest'
             }
         }
     }
