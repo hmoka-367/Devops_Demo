@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_CREDENTIALS = credentials('docker-cred')  // The ID of your Jenkins Docker credentials
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -13,6 +17,18 @@ pipeline {
                 bat 'mvn clean package'
             }
         }
+
+        stage('Docker Login') {
+            steps {
+                script {
+                    // Docker login command using credentials
+                    bat """
+                    docker login -u ${docker-cred.username} -p ${docker-cred.password}
+                    """
+                }
+            }
+        }
+
         stage('Run Docker Container') {
             steps {
                 bat 'docker build -t devops-demo .'
@@ -23,6 +39,7 @@ pipeline {
                     )
                 '''
                 bat 'docker run -d --name devops-demo -p 8085:80 devops-demo:latest'
+                bat 'docker push devops-demo'
             }
         }
     }
