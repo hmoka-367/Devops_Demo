@@ -9,6 +9,7 @@
 
     <build>
         <plugins>
+            <!-- Compiler plugin to specify Java version -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -18,6 +19,8 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+
+            <!-- Assembly plugin for fat JAR (with dependencies) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -32,9 +35,28 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <archive>
+                                <manifestEntries>
+                                    <Main-Class>com.example.App</Main-Class>  <!-- Set your main class here -->
+                                </manifestEntries>
+                            </archive>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Optional: Use the maven-jar-plugin to set the Main-Class (if desired) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>com.example.App</Main-Class>  <!-- Set your main class here -->
+                        </manifestEntries>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
