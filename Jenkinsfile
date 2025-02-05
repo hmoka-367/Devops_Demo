@@ -16,7 +16,12 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 bat 'docker build -t devops-demo .'
-                bat 'docker rm $(docker ps -a -f "name=devops-demo" --format "{{.ID}}")'
+                bat '''
+                    for /f "tokens=*" %%i in ('docker ps -a -f "name=devops-demo" --format "{{.ID}}"') do (
+                        docker stop %%i
+                        docker rm %%i
+                    )
+                '''
                 bat 'docker run -d --name devops-demo -p 8085:80 devops-demo:latest'
             }
         }
