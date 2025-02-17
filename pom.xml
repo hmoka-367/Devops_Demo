@@ -17,6 +17,11 @@
         </dependency>
     </dependencies>
 
+    <properties>
+      <sonar.organization>hmoka-367</sonar.organization>
+      <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+
     <build>
         <plugins>
             <!-- Compiler plugin to specify Java version -->
